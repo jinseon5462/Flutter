@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+final homeUrl = Uri.parse('http://blog.codefactory.ai');
+
 class HomeScreen extends StatelessWidget {
-  WebViewController? controller;
-  final homeUrl = 'http://blog.codefactory.ai';
+  WebViewController controller = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(homeUrl);
+
   HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -16,10 +20,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             onPressed: (() {
               //print('click');
-              if (controller == null) {
-                return;
-              }
-              controller!.loadUrl(homeUrl);
+              controller.loadRequest(homeUrl);
             }),
             icon: Icon(Icons.home),
           ),
@@ -28,13 +29,14 @@ class HomeScreen extends StatelessWidget {
           'Code Factory',
         ),
       ),
-      body: WebView(
-        onWebViewCreated: (WebViewController controller) {
-          this.controller = controller;
-        },
-        initialUrl: homeUrl,
-        javascriptMode: JavascriptMode.unrestricted,
-      ),
+      body: WebViewWidget(controller: controller),
+      // WebView(
+      //   onWebViewCreated: (WebViewController controller) {
+      //     this.controller = controller;
+      //   },
+      //   initialUrl: homeUrl,
+      //   javascriptMode: JavascriptMode.unrestricted,
+      // ),
     );
   }
 }
