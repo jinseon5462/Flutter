@@ -69,7 +69,10 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
   void onReversePressed() {
     final currentPosition = videoController!.value.position;
-    Duration position = currentPosition - Duration(seconds: 3);
+    Duration position = Duration();
+    if (currentPosition.inSeconds > 3) {
+      position = currentPosition - Duration(seconds: 3);
+    }
     videoController!.seekTo(position);
   }
 
