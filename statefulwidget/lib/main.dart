@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:statefulwidget/screen/home_screen.dart';
 
 void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Root(),
-  ));
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Root(),
+    ),
+  );
 }
 
 class Root extends StatefulWidget {
