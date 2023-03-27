@@ -17,6 +17,7 @@ class CustomVideoPlayer extends StatefulWidget {
 
 class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   VideoPlayerController? videoController;
+  Duration currentPosition = Duration();
 
   @override
   void initState() {
@@ -36,7 +37,9 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     if (videoController == null) {
-      return CircularProgressIndicator();
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     }
 
     return AspectRatio(
@@ -52,20 +55,25 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
             onForwardPressed: onForwardPressed,
             isPlaying: videoController!.value.isPlaying,
           ),
-          Positioned(
-            // Stack위젯에서 많이 사용하는 Positioned widget
-            right: 0, // 오른쪽 끝으로 배치
-            child: IconButton(
-              onPressed: () {},
-              color: Colors.white,
-              iconSize: 30.0,
-              icon: Icon(Icons.photo_camera_back),
-            ),
+          _NewVideo(
+            onPressed: onNewVideoPressed,
+          ),
+          Slider(
+            value: currentPosition.inSeconds.toDouble(),
+            onChanged: (double val) {
+              setState(() {
+                currentPosition == Duration(seconds: val.toInt());
+              });
+            },
+            max: videoController!.value.duration.inSeconds.toDouble(),
+            min: 0,
           ),
         ],
       ),
     );
   }
+
+  void onNewVideoPressed() {}
 
   void onReversePressed() {
     final currentPosition = videoController!.value.position;
@@ -140,6 +148,25 @@ class _Controlls extends StatelessWidget {
       color: Colors.white,
       icon: Icon(
         iconData,
+      ),
+    );
+  }
+}
+
+class _NewVideo extends StatelessWidget {
+  final VoidCallback onPressed;
+  const _NewVideo({required this.onPressed, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      // Stack위젯에서 많이 사용하는 Positioned widget
+      right: 0, // 오른쪽 끝으로 배치
+      child: IconButton(
+        onPressed: onPressed,
+        color: Colors.white,
+        iconSize: 30.0,
+        icon: Icon(Icons.photo_camera_back),
       ),
     );
   }
